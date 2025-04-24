@@ -107,7 +107,7 @@ class WebScraper:
         self.result_dict['0'] = self.timestamp_year
         self.result_dict['1'] = self.timestamp_day_month
         for subnet in self.subnets_list:
-            self.result_dict[subnet] = self.values_list[idx]
+            self.result_dict[subnet] = round(float(self.values_list[idx]), 2)
             idx += 1
 
     def provideResultData(self):
