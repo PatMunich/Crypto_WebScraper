@@ -1,5 +1,4 @@
 import time
-
 from WebScraper import WebScraper
 from WorkbookEditor import WorkbookEditor
 
@@ -23,4 +22,4 @@ if __name__ == '__main__':
             WorkbookEditor.sortInSubnetData(WebScraper.provideResultData())
         else:
             print(f"[WebScraper error] trying to execute web-scraper {str(WebScraper.response.status_code)}")
-        time.sleep(10)
+        time.sleep(86400)
