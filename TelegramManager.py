@@ -23,9 +23,12 @@ class TelegramManager:
         else:
             pass
 
-    def sendMessage(self, in_messageToSend):  # NOQA
-        formatted_message = self.formatMessage(in_messageToSend)
-        params = {"chat_id": f"{self.chatId}", "text": f"{formatted_message}"}
+    def sendMessage(self, in_message, type='normal'):  # NOQA
+        if type == 'normal':
+            formatted_message = self.formatMessage(in_message)
+            params = {"chat_id": f"{self.chatId}", "text": f"{formatted_message}"}
+        else:
+            params = {"chat_id": f"{self.chatId}", "text": f"{in_message}"}
         message = requests.post(f"{self.url}{SEND_MESSAGE_ENDPOINT}", params=params)  # NOQA
         return message.status_code
 

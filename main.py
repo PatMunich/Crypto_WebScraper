@@ -6,6 +6,7 @@ from TelegramManager import TelegramManager
 # Defines
 TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pcHxqy3wwmYcpHznK5Fbctu27W'
 USER = 'Patrick'
+ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!"}
 
 if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
@@ -29,5 +30,6 @@ if __name__ == '__main__':
             else:
                 print("[TelegramManager error] while trying to send daily rewards update message!")
         else:
-            print(f"[WebScraper error] trying to execute web-scraper {str(WebScraper.response.status_code)}!")
+            TelegramManager.sendMessage(ERROR_CODES['1'])
+            print(ERROR_CODES['1'])
         time.sleep(86400)
