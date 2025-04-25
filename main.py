@@ -22,8 +22,9 @@ if __name__ == '__main__':
             WebScraper.buildDictionary()
             print(f"[WebScraper status] {WebScraper.timestamp} result: "
                   f"{str(dict(list(WebScraper.result_dict.items())))}")
-            WorkbookEditor.sortInSubnetData(WebScraper.provideResultData())
-            if TelegramManager.sendMessage(WebScraper.provideResultData()):
+            data_set = WebScraper.provideResultData()
+            WorkbookEditor.sortInSubnetData(data_set)
+            if TelegramManager.sendMessage(data_set):
                 pass
             else:
                 print("[TelegramManager error] while trying to send daily rewards update message!")

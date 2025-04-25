@@ -37,7 +37,7 @@ class TelegramManager:
                             f"▪ {SUBNET_NAMES[keys[2]]} : {in_message[keys[2]]} \n" \
                             f"▪ {SUBNET_NAMES[keys[3]]} : {in_message[keys[3]]} \n"
         return formatted_message
-
+"""
     def getLastUpdateId(self, updates):  # NOQA
         updateIds = []
         for update in updates["result"]:
@@ -90,3 +90,4 @@ class TelegramManager:
                         f"▪ : {in_data} \n" \
                         f"▪ : {in_data} \n"
         self.sendMessage(message_to_send)
+"""
