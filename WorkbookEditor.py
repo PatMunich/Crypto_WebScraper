@@ -47,8 +47,8 @@ class WorkbookEditor:
                                 target_sheet[write_coordinate] = subnet_balance
                                 target_sheet[self.COLUMN_DATE_CHAR + str(row_id + 1)].fill = self.DARK_GREEN
                             self.workbook.save(self.path_to_file)
-
-                            print(f"[WorkbookEditor status] data successfully written into workbook!")
+                            print(f"[WorkbookEditor status] daily rewards for {timestamp_day_month} successfully "
+                                  f"written into workbook!")
                             return
                     except:  # NOQA
                         pass
