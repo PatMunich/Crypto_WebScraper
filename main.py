@@ -31,6 +31,7 @@ def dailyUpdate():  # NOQA
         TelegramManager.sendMessage(ERROR_CODES['1'])
         print(ERROR_CODES['1'])
 
+
 # Run script in background: nohup python2.7 MyScheduledProgram.py &
 if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
@@ -39,4 +40,4 @@ if __name__ == '__main__':
     schedule.every().day.at(DAILY_UPDATE_TIME).do(dailyUpdate)
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(120)
