@@ -30,6 +30,7 @@ def dailyUpdate():  # NOQA
         TelegramManager.sendMessage(ERROR_CODES['1'])
         print(ERROR_CODES['1'])
 
+# Run script in background: nohup python2.7 MyScheduledProgram.py &
 if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
     WorkbookEditor = WorkbookEditor()
