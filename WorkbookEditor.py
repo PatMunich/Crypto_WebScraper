@@ -9,7 +9,7 @@ class WorkbookEditor:
         self.COLUMN_WRITE_VALUE_SUBNETS = {'0': 'D', '4': 'J', '19': 'R', '56': 'Z', '64': 'AD'}
         self.DARK_GREEN = PatternFill(start_color='3cb371', end_color='3cb371', fill_type='solid')
         # Variables
-        self.path_to_file = '/Users/patricksmacbookpro/Desktop/Staking Rewards TAO.xlsx'
+        self.path_to_file = 'Files/Staking Rewards TAO.xlsx'
         self.errorCodes_dict = {'1': "[WorkbookEditor error] during loading of the workbook!"}
         try:
             self.workbook = xl.load_workbook(self.path_to_file)
@@ -47,7 +47,8 @@ class WorkbookEditor:
                                 target_sheet[write_coordinate] = subnet_balance
                                 target_sheet[self.COLUMN_DATE_CHAR + str(row_id + 1)].fill = self.DARK_GREEN
                             self.workbook.save(self.path_to_file)
-                            print(f"[WorkbookEditor status] daily rewards for {timestamp_day_month} successfully "
+                            print(f"[WorkbookEditor status] daily rewards"
+                                  f" for {timestamp_day_month} successfully "
                                   f"written into workbook!")
                             return
                     except:  # NOQA
