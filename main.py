@@ -1,4 +1,5 @@
 import time
+import schedule
 from WebScraper import WebScraper
 from WorkbookEditor import WorkbookEditor
 from TelegramManager import TelegramManager
@@ -8,28 +9,32 @@ TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pc
 USER = 'Patrick'
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!"}
 
+def dailyUpdate():  # NOQA
+    WebScraper.getTimestamp()
+    if WebScraper.performanceTimerWebsiteLoading():
+        WebScraper.trimWebsiteContent()
+        WebScraper.getValuesBasedOnIndex('token_value')
+        WebScraper.getValuesBasedOnIndex('token_name')
+        WebScraper.formatListEntries('token_value')
+        WebScraper.formatListEntries('token_name')
+        WebScraper.buildDictionary()
+        print(f"[WebScraper status] {WebScraper.timestamp} result: "
+              f"{str(dict(list(WebScraper.result_dict.items())))}")
+        data_set = WebScraper.provideResultData()
+        WorkbookEditor.sortInSubnetData(data_set)
+        if TelegramManager.sendMessage(data_set):
+            pass
+        else:
+            print("[TelegramManager error] while trying to send daily rewards update message!")
+    else:
+        TelegramManager.sendMessage(ERROR_CODES['1'])
+        print(ERROR_CODES['1'])
+
 if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
     WorkbookEditor = WorkbookEditor()
     TelegramManager = TelegramManager(USER)
+    schedule.every().day.at("23:55").do(dailyUpdate)
     while True:
-        WebScraper.getTimestamp()
-        if WebScraper.performanceTimerWebsiteLoading():
-            WebScraper.trimWebsiteContent()
-            WebScraper.getValuesBasedOnIndex('token_value')
-            WebScraper.getValuesBasedOnIndex('token_name')
-            WebScraper.formatListEntries('token_value')
-            WebScraper.formatListEntries('token_name')
-            WebScraper.buildDictionary()
-            print(f"[WebScraper status] {WebScraper.timestamp} result: "
-                  f"{str(dict(list(WebScraper.result_dict.items())))}")
-            data_set = WebScraper.provideResultData()
-            WorkbookEditor.sortInSubnetData(data_set)
-            if TelegramManager.sendMessage(data_set):
-                pass
-            else:
-                print("[TelegramManager error] while trying to send daily rewards update message!")
-        else:
-            TelegramManager.sendMessage(ERROR_CODES['1'])
-            print(ERROR_CODES['1'])
-        time.sleep(86400)
+        schedule.run_pending()
+        time.sleep(60)
