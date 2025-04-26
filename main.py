@@ -8,6 +8,7 @@ from TelegramManager import TelegramManager
 TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pcHxqy3wwmYcpHznK5Fbctu27W'
 USER = 'Patrick'
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!"}
+DAILY_UPDATE_TIME = '23:55'
 
 def dailyUpdate():  # NOQA
     WebScraper.getTimestamp()
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
     WorkbookEditor = WorkbookEditor()
     TelegramManager = TelegramManager(USER)
-    schedule.every().day.at("23:55").do(dailyUpdate)
+    schedule.every().day.at(DAILY_UPDATE_TIME).do(dailyUpdate)
     while True:
         schedule.run_pending()
         time.sleep(60)
