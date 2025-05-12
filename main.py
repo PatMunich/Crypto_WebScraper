@@ -40,4 +40,4 @@ if __name__ == '__main__':
     schedule.every().day.at(DAILY_UPDATE_TIME).do(dailyUpdate)
     while True:
         schedule.run_pending()
-        time.sleep(120)
+        time.sleep(240)
