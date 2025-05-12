@@ -14,7 +14,8 @@ class TelegramManager:
         self.selectChatId(in_user)
         self.url = f"{BASE_URL}{self.token}"
         self.offset = 0
-        self.firstRun = True
+        self.first_run = True
+        self.last_message = {}
 
     def selectChatId(self, in_user):  # NOQA
         if in_user == "Patrick":
@@ -34,11 +35,20 @@ class TelegramManager:
 
     def formatMessage(self, in_message):  # NOQA
         keys = list(in_message.keys())
-        formatted_message = f"> daily subnet rewards < \n" \
-                            f"▪ {SUBNET_NAMES[keys[0]]} : {in_message[keys[0]]} \n" \
-                            f"▪ {SUBNET_NAMES[keys[1]]} : {in_message[keys[1]]} \n" \
-                            f"▪ {SUBNET_NAMES[keys[2]]} : {in_message[keys[2]]} \n" \
-                            f"▪ {SUBNET_NAMES[keys[3]]} : {in_message[keys[3]]} \n"
+        if self.first_run:
+            formatted_message = f"> daily subnet rewards < \n" \
+                                f"▪ {SUBNET_NAMES[keys[0]]} : {in_message[keys[0]]} \n" \
+                                f"▪ {SUBNET_NAMES[keys[1]]} : {in_message[keys[1]]} \n" \
+                                f"▪ {SUBNET_NAMES[keys[2]]} : {in_message[keys[2]]} \n" \
+                                f"▪ {SUBNET_NAMES[keys[3]]} : {in_message[keys[3]]} \n"
+            self.first_run = False
+        else:
+            formatted_message = f"> daily subnet rewards < \n" \
+                                f"▪ {SUBNET_NAMES[keys[0]]} : {in_message[keys[0]]} [+{in_message[keys[0]] - self.last_message[keys[0]]}]\n" \
+                                f"▪ {SUBNET_NAMES[keys[1]]} : {in_message[keys[1]]} [+{in_message[keys[1]] - self.last_message[keys[1]]}]\n" \
+                                f"▪ {SUBNET_NAMES[keys[2]]} : {in_message[keys[2]]} [+{in_message[keys[2]] - self.last_message[keys[2]]}]\n" \
+                                f"▪ {SUBNET_NAMES[keys[3]]} : {in_message[keys[3]]} [+{in_message[keys[3]] - self.last_message[keys[3]]}]\n"
+        self.last_message = in_message
         return formatted_message
 """
     def getLastUpdateId(self, updates):  # NOQA
