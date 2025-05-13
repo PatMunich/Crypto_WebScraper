@@ -33,8 +33,7 @@ class WebScraper:
             self.response = requests.get(self.website)
             end_response_time = time.time()
             if self.response.status_code == self.SUCCESS_CODE:
-                print(f"[WebScraper status] website successfully loaded within "
-                      f"{round(end_response_time - start_request_time, 2)} seconds!")
+                print("[WebScraper status] website successfully loaded within!")
                 return True
             else:
                 return False
