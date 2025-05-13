@@ -37,7 +37,6 @@ if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
     WorkbookEditor = WorkbookEditor()
     TelegramManager = TelegramManager(USER)
-    schedule.every().day.at(DAILY_UPDATE_TIME).do(dailyUpdate)
     while True:
-        schedule.run_pending()
-        time.sleep(240)
+        dailyUpdate()
+        time.sleep(86400)
