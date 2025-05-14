@@ -1,5 +1,4 @@
 import time
-import schedule
 from WebScraper import WebScraper
 from WorkbookEditor import WorkbookEditor
 from TelegramManager import TelegramManager
