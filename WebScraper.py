@@ -1,4 +1,6 @@
 import time
+from time import sleep
+
 import Tester
 import requests
 from bs4 import BeautifulSoup
@@ -9,6 +11,9 @@ class WebScraper:
         # Defines
         self.SUCCESS_CODE = 200
         self.TEST_MODE = False
+        self.TOTAL_SUBNETS = 4
+        self.SEARCH_STRING_VALUES = '<span class="max-w-full truncate text-text-secondary">'
+        self.SEARCH_STRING_NAMES = '<dt class="max-w-36 truncate font-medium lg:max-w-28 xl:max-w-36">'
         # Variables
         self.website = in_website
         self.response = ''
@@ -27,7 +32,7 @@ class WebScraper:
                                 '2': "[WebScraper error] character in subnets list!"}
         self.Tester = Tester.Tester()
 
-    def performanceTimerWebsiteLoading(self):
+    def performanceTimerWebsiteLoading(self):  # NOQA
         if not self.TEST_MODE:
             start_request_time = time.time()
             self.response = requests.get(self.website)
@@ -41,7 +46,7 @@ class WebScraper:
             print("[WebScraper test mode] activated!")
             return True
 
-    def getTimestamp(self):
+    def getTimestamp(self):  # NOQA
         self.timestamp = datetime.now().strftime("%Y-%d/%m,%H:%M:%S")
         date = self.timestamp.split(',')[0]
         self.timestamp_year = date.split('-')[0]
@@ -53,55 +58,34 @@ class WebScraper:
         else:
             soup = BeautifulSoup(self.Tester.readFile(), 'html.parser')
         website = str(soup.prettify())
+        # Get Subnet Values
+        temp_content = website
+        self.values_list = []
+        for i in range(self.TOTAL_SUBNETS):  # NOQA
+            trim_idx = temp_content.find(self.SEARCH_STRING_VALUES)
+            self.values_list.append(temp_content[trim_idx+113:trim_idx+119])
+            temp_content = temp_content[trim_idx+1:]
+        # Get Subnet Names
+        self.subnets_list = []
+        temp_content = website
+        for i in range(self.TOTAL_SUBNETS):  # NOQA
+            trim_idx = temp_content.find(self.SEARCH_STRING_NAMES)
+            self.subnets_list.append(temp_content[trim_idx+79:trim_idx+88])
+            temp_content = temp_content[trim_idx+1:]
 
-        idx_temp = website.find('Subnet breakdown')
-        idx_fin = website.find('Subnet breakdown', idx_temp + 1)
-        trimmed_content = website[idx_fin:]
-        idx_pos = trimmed_content.find('Positions')
-        idx_tra = trimmed_content.find('Transactions')
-        self.trimmed_content = trimmed_content[idx_pos:idx_tra]
+    def formatListEntries(self):  # NOQA
+        for value in self.values_list:
+            if value.find('\n') != -1:
+                idx = value.find('\n')
+                self.values_list[self.values_list.index(value)] = value[:idx]
+        print(f"formatted values_list: {self.values_list}")
+        for subnet in self.subnets_list:
+            if subnet.find('\n') != -1:
+                idx = subnet.find('\n')
+                self.subnets_list[self.subnets_list.index(subnet)] = subnet[:idx]
+        print(f"formatted subnets_list: {self.subnets_list}")
 
-        pre_text_token_value = "runcate text-text-primary'><div class='inline'> <div class='inline'>"  # NOQA
-        self.pre_token_value_offset = len(pre_text_token_value)
-        post_text_token_value = "'\n                    "
-        self.post_token_value_offset = len(post_text_token_value)
-        pre_text_token_name = 'a class="truncate text-lg font-bold text-text-primary"'
-        self.pre_token_name_offset = len(pre_text_token_name)
-
-    def getValuesBasedOnIndex(self, in_scope):
-        section = self.trimmed_content
-        if in_scope == 'token_value':
-            while section.find('truncate text-text-primary') > 0:
-                idx = section.find('truncate text-text-primary')
-                section = section[idx + self.pre_token_value_offset:]
-                self.values_list.append(section[self.post_token_value_offset - 1:self.post_token_value_offset + 5])
-        elif in_scope == 'token_name':
-            while section.find('truncate text-lg font-bold text-text-primary') > 0:
-                idx = section.find('truncate text-lg font-bold text-text-primary')
-                section = section[idx + self.pre_token_name_offset:]
-                self.subnets_list.append(section[self.post_token_name_offset - 1:self.post_token_name_offset + 1])
-        else:
-            pass
-
-    def formatListEntries(self, in_scope):
-        if in_scope == 'token_value':
-            # print(f"[WebScraper debug] before formatting: {self.values_list}")
-            for value in self.values_list:
-                if value.find('\n') != -1:
-                    idx = value.find('\n')
-                    self.values_list[self.values_list.index(value)] = value[:idx]
-            # print(f"[WebScraper debug] after formatting: {self.values_list}")
-        elif in_scope == 'token_name':
-            # print(f"[WebScraper debug] before formatting: {self.subnets_list}")
-            for subnet in self.subnets_list:
-                if subnet.find('-') != -1:
-                    idx = subnet.find('-')
-                    self.subnets_list[self.subnets_list.index(subnet)] = subnet[:idx]
-            # print(f"[WebScraper debug] after formatting: {self.subnets_list}")
-        else:
-            pass
-
-    def buildDictionary(self):
+    def buildDictionary(self):  # NOQA
         idx = 0
         self.result_dict['0'] = self.timestamp_year
         self.result_dict['1'] = self.timestamp_day_month
