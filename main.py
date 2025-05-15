@@ -13,10 +13,7 @@ def dailyUpdate():  # NOQA
     WebScraper.getTimestamp()
     if WebScraper.performanceTimerWebsiteLoading():
         WebScraper.trimWebsiteContent()
-        WebScraper.getValuesBasedOnIndex('token_value')
-        WebScraper.getValuesBasedOnIndex('token_name')
-        WebScraper.formatListEntries('token_value')
-        WebScraper.formatListEntries('token_name')
+        WebScraper.formatListEntries()
         WebScraper.buildDictionary()
         print(f"[WebScraper status] {WebScraper.timestamp} result: "
               f"{str(dict(list(WebScraper.result_dict.items())))}")
