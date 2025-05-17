@@ -4,7 +4,6 @@ import requests
 BASE_URL = "https://api.telegram.org/bot"
 UPDATE_ENDPOINT = "/getUpdates"
 SEND_MESSAGE_ENDPOINT = "/sendMessage"
-SUBNET_NAMES = {'4': "Targon", '19': "Nineteen", '56': "Gradients", '64': "Chutes"}
 
 
 class TelegramManager:
@@ -37,17 +36,17 @@ class TelegramManager:
         keys = list(in_message.keys())
         if self.first_run:
             formatted_message = f"> daily subnet rewards < \n" \
-                                f"▪ {SUBNET_NAMES[keys[0]]} : {in_message[keys[0]]} \n" \
-                                f"▪ {SUBNET_NAMES[keys[1]]} : {in_message[keys[1]]} \n" \
-                                f"▪ {SUBNET_NAMES[keys[2]]} : {in_message[keys[2]]} \n" \
-                                f"▪ {SUBNET_NAMES[keys[3]]} : {in_message[keys[3]]} \n"
+                                f"▪ {keys[0]} : {in_message[keys[0]]} \n" \
+                                f"▪ {keys[1]} : {in_message[keys[1]]} \n" \
+                                f"▪ {keys[2]} : {in_message[keys[2]]} \n" \
+                                f"▪ {keys[3]} : {in_message[keys[3]]} \n"
             self.first_run = False
         else:
             formatted_message = f"> daily subnet rewards < \n" \
-                                f"▪ {SUBNET_NAMES[keys[0]]} : {in_message[keys[0]]} [+{in_message[keys[0]] - self.last_message[keys[0]]}]\n" \
-                                f"▪ {SUBNET_NAMES[keys[1]]} : {in_message[keys[1]]} [+{in_message[keys[1]] - self.last_message[keys[1]]}]\n" \
-                                f"▪ {SUBNET_NAMES[keys[2]]} : {in_message[keys[2]]} [+{in_message[keys[2]] - self.last_message[keys[2]]}]\n" \
-                                f"▪ {SUBNET_NAMES[keys[3]]} : {in_message[keys[3]]} [+{in_message[keys[3]] - self.last_message[keys[3]]}]\n"
+                                f"▪ {keys[0]} : {in_message[keys[0]]} [+{in_message[keys[0]] - self.last_message[keys[0]]}]\n" \
+                                f"▪ {keys[1]} : {in_message[keys[1]]} [+{in_message[keys[1]] - self.last_message[keys[1]]}]\n" \
+                                f"▪ {keys[2]} : {in_message[keys[2]]} [+{in_message[keys[2]] - self.last_message[keys[2]]}]\n" \
+                                f"▪ {keys[3]} : {in_message[keys[3]]} [+{in_message[keys[3]] - self.last_message[keys[3]]}]\n"
         self.last_message = in_message
         return formatted_message
 """
