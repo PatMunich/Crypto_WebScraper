@@ -7,7 +7,7 @@ class WorkbookEditor:
         # Defines
         self.COLUMN_DATE = 1
         self.COLUMN_DATE_CHAR = 'A'
-        self.COLUMN_WRITE_VALUE_SUBNETS = {'0': 'D', '4': 'J', '19': 'R', '56': 'Z', '64': 'AD'}
+        self.COLUMN_WRITE_VALUE_SUBNETS = {'Targon': 'J', 'Nineteen': 'R', 'Gradients': 'Z', 'Chutes': 'AD'}
         self.DARK_GREEN = PatternFill(start_color='3cb371', end_color='3cb371', fill_type='solid')
         # Variables
         self.path_to_file = 'Files/Staking Rewards TAO.xlsx'
@@ -28,7 +28,7 @@ class WorkbookEditor:
 
     def sortInSubnetData(self, in_subnet_data):
         for idx in self.workbook_sheet_titles:
-            if str(in_subnet_data['0']) in self.workbook_sheet_titles[idx]:
+            if in_subnet_data['0'] in self.workbook_sheet_titles[idx]:
                 target_sheet = self.workbook.get_sheet_by_name(in_subnet_data['0'])  # NOQA
                 for row_id in range(target_sheet.max_row):
                     cell_content = target_sheet.cell(row=row_id + 1, column=self.COLUMN_DATE).value
@@ -39,7 +39,7 @@ class WorkbookEditor:
                             in_subnet_data.pop('0')
                             in_subnet_data.pop('1')
                             for subnet in in_subnet_data:
-                                write_coordinate = str(self.COLUMN_WRITE_VALUE_SUBNETS[str(subnet)]) + str(row_id + 1)
+                                write_coordinate = str(self.COLUMN_WRITE_VALUE_SUBNETS[subnet]) + str(row_id + 1)
                                 subnet_balance = in_subnet_data[str(subnet)]
                                 try:
                                     subnet_balance = in_subnet_data[str(subnet)].replace('.', ',')
