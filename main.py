@@ -5,6 +5,7 @@ from TelegramManager import TelegramManager
 
 # Defines
 USER = 'Patrick'
+TEST_MODE = False
 DAY_IN_SECONDS = 86400
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!",
                '2': "[TelegramManager error] while trying to send daily rewards update message!"}
@@ -31,7 +32,7 @@ def dailyUpdate():  # NOQA
 
 
 if __name__ == '__main__':
-    WebScraper = WebScraper(TARGET_WEBSITE)
+    WebScraper = WebScraper(TARGET_WEBSITE, TEST_MODE)
     WorkbookEditor = WorkbookEditor()
     TelegramManager = TelegramManager(USER)
     while True:

@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 class WebScraper:
-    def __init__(self, in_website):
+    def __init__(self, in_website, in_test_mode):
         # Defines
         self.SUCCESS_CODE = 200
-        self.TEST_MODE = False
+        self.TEST_MODE = in_test_mode
         self.TOTAL_SUBNETS = 4
         self.SEARCH_STRING_VALUES = '<span class="max-w-full truncate text-text-secondary">'
         self.SEARCH_STRING_NAMES = '<dt class="max-w-36 truncate font-medium lg:max-w-28 xl:max-w-36">'
@@ -31,6 +31,12 @@ class WebScraper:
         self.result_dict = {}
         self.Tester = Tester.Tester()
 
+    def getTimestamp(self):  # NOQA
+        self.timestamp = datetime.now().strftime("%Y-%d/%m,%H:%M:%S")
+        date = self.timestamp.split(',')[0]
+        self.timestamp_year = date.split('-')[0]
+        self.timestamp_day_month = date.split('-')[1]
+
     def loadWebsiteContent(self):  # NOQA
         if not self.TEST_MODE:
             self.response = requests.get(self.website)
@@ -42,12 +48,6 @@ class WebScraper:
         else:
             print(self.STATUS_CODES['2'])
             return True
-
-    def getTimestamp(self):  # NOQA
-        self.timestamp = datetime.now().strftime("%Y-%d/%m,%H:%M:%S")
-        date = self.timestamp.split(',')[0]
-        self.timestamp_year = date.split('-')[0]
-        self.timestamp_day_month = date.split('-')[1]
 
     def trimWebsiteContent(self):  # NOQA
         if not self.TEST_MODE:
