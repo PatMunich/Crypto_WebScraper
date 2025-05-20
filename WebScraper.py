@@ -1,6 +1,4 @@
 import time
-from time import sleep
-
 import Tester
 import requests
 from bs4 import BeautifulSoup
@@ -52,7 +50,7 @@ class WebScraper:
         self.timestamp_year = date.split('-')[0]
         self.timestamp_day_month = date.split('-')[1]
 
-    def trimWebsiteContent(self):
+    def trimWebsiteContent(self):  # NOQA
         if not self.TEST_MODE:
             soup = BeautifulSoup(self.response.content, 'html.parser')  # NOQA
         else:
@@ -93,5 +91,5 @@ class WebScraper:
             self.result_dict[subnet] = round(float(self.values_list[idx]), 2)
             idx += 1
 
-    def provideResultData(self):
+    def provideResultData(self):  # NOQA
         return self.result_dict

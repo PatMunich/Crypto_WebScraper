@@ -4,10 +4,10 @@ from WorkbookEditor import WorkbookEditor
 from TelegramManager import TelegramManager
 
 # Defines
-TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pcHxqy3wwmYcpHznK5Fbctu27W'
 USER = 'Patrick'
+DAY_IN_SECONDS = 86400
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!"}
-DAILY_UPDATE_TIME = '23:55'
+TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pcHxqy3wwmYcpHznK5Fbctu27W'
 
 def dailyUpdate():  # NOQA
     WebScraper.getTimestamp()
@@ -16,7 +16,7 @@ def dailyUpdate():  # NOQA
         WebScraper.formatListEntries()
         WebScraper.buildDictionary()
         print(f"[WebScraper status] {WebScraper.timestamp} result: "
-              f"{str(dict(list(WebScraper.result_dict.items())))}")
+              f"{dict(list(WebScraper.result_dict.items()))}")
         data_set = WebScraper.provideResultData()
         WorkbookEditor.sortInSubnetData(data_set)
         if TelegramManager.sendMessage(data_set):
@@ -28,11 +28,10 @@ def dailyUpdate():  # NOQA
         print(ERROR_CODES['1'])
 
 
-# Run script in background: nohup python2.7 MyScheduledProgram.py &
 if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE)
     WorkbookEditor = WorkbookEditor()
     TelegramManager = TelegramManager(USER)
     while True:
         dailyUpdate()
-        time.sleep(86400)
+        time.sleep(DAY_IN_SECONDS)

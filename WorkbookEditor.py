@@ -1,5 +1,4 @@
 import openpyxl as xl
-from time import sleep
 from openpyxl.styles import PatternFill
 
 class WorkbookEditor:
