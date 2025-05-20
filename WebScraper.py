@@ -13,7 +13,7 @@ class WebScraper:
         self.SEARCH_STRING_NAMES = '<dt class="max-w-36 truncate font-medium lg:max-w-28 xl:max-w-36">'
         self.ERROR_CODES = {'1': "[WebScraper error] value in dict not correctly formatted!",
                             '2': "[WebScraper error] character in subnets list!"}
-        self.STATUS_CODES = {'1': "[WebScraper status] website successfully loaded within!",
+        self.STATUS_CODES = {'1': "[WebScraper status] website successfully loaded!",
                              '2': "[WebScraper test mode] activated!"}
         # Variables
         self.website = in_website
@@ -30,6 +30,7 @@ class WebScraper:
         self.subnets_list = []
         self.result_dict = {}
         self.Tester = Tester.Tester()
+        self.path_to_file = 'Files/website_for_backtest.txt'
 
     def getTimestamp(self):  # NOQA
         self.timestamp = datetime.now().strftime("%Y-%d/%m,%H:%M:%S")
@@ -52,6 +53,8 @@ class WebScraper:
     def trimWebsiteContent(self):  # NOQA
         if not self.TEST_MODE:
             soup = BeautifulSoup(self.response.content, 'html.parser')  # NOQA
+            with open(self.path_to_file, "w") as f:
+                f.write(str(soup))
         else:
             soup = BeautifulSoup(self.Tester.readFile(), 'html.parser')
         website = str(soup.prettify())

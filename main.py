@@ -6,11 +6,10 @@ from TelegramManager import TelegramManager
 # Defines
 USER = 'Patrick'
 TEST_MODE = False
-DAY_IN_SECONDS = 86400
+DAY_IN_SECONDS = 10 #86400
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!",
                '2': "[TelegramManager error] while trying to send daily rewards update message!"}
-STATUS_CODES = {'1': f"[WebScraper status] {WebScraper.timestamp} result: "
-                     f"{dict(list(WebScraper.result_dict.items()))}"}
+STATUS_CODES = {'1': f"[WebScraper status] result: "}
 TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pcHxqy3wwmYcpHznK5Fbctu27W'
 
 def dailyUpdate():  # NOQA
@@ -19,7 +18,7 @@ def dailyUpdate():  # NOQA
         WebScraper.trimWebsiteContent()
         WebScraper.formatListEntries()
         WebScraper.buildDictionary()
-        print(STATUS_CODES['1'])
+        print(STATUS_CODES['1'], dict(list(WebScraper.result_dict.items())))
         data_set = WebScraper.provideResultData()
         WorkbookEditor.sortInSubnetData(data_set)
         if TelegramManager.sendMessage(data_set):
@@ -37,4 +36,5 @@ if __name__ == '__main__':
     TelegramManager = TelegramManager(USER)
     while True:
         dailyUpdate()
+        print('\n')
         time.sleep(DAY_IN_SECONDS)
