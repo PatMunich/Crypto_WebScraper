@@ -11,7 +11,7 @@ TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pc
 
 def dailyUpdate():  # NOQA
     WebScraper.getTimestamp()
-    if WebScraper.performanceTimerWebsiteLoading():
+    if WebScraper.loadWebsiteContent():
         WebScraper.trimWebsiteContent()
         WebScraper.formatListEntries()
         WebScraper.buildDictionary()

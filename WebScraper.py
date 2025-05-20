@@ -1,4 +1,3 @@
-import time
 import Tester
 import requests
 from bs4 import BeautifulSoup
@@ -12,6 +11,10 @@ class WebScraper:
         self.TOTAL_SUBNETS = 4
         self.SEARCH_STRING_VALUES = '<span class="max-w-full truncate text-text-secondary">'
         self.SEARCH_STRING_NAMES = '<dt class="max-w-36 truncate font-medium lg:max-w-28 xl:max-w-36">'
+        self.ERROR_CODES = {'1': "[WebScraper error] value in dict not correctly formatted!",
+                            '2': "[WebScraper error] character in subnets list!"}
+        self.STATUS_CODES = {'1': "[WebScraper status] website successfully loaded within!",
+                             '2': "[WebScraper test mode] activated!"}
         # Variables
         self.website = in_website
         self.response = ''
@@ -26,22 +29,18 @@ class WebScraper:
         self.values_list = []
         self.subnets_list = []
         self.result_dict = {}
-        self.errorCodes_dict = {'1': "[WebScraper error] value in dict not correctly formatted!",
-                                '2': "[WebScraper error] character in subnets list!"}
         self.Tester = Tester.Tester()
 
-    def performanceTimerWebsiteLoading(self):  # NOQA
+    def loadWebsiteContent(self):  # NOQA
         if not self.TEST_MODE:
-            start_request_time = time.time()
             self.response = requests.get(self.website)
-            end_response_time = time.time()
             if self.response.status_code == self.SUCCESS_CODE:
-                print("[WebScraper status] website successfully loaded within!")
+                print(self.STATUS_CODES['1'])
                 return True
             else:
                 return False
         else:
-            print("[WebScraper test mode] activated!")
+            print(self.STATUS_CODES['2'])
             return True
 
     def getTimestamp(self):  # NOQA
@@ -76,12 +75,10 @@ class WebScraper:
             if value.find('\n') != -1:
                 idx = value.find('\n')
                 self.values_list[self.values_list.index(value)] = value[:idx]
-        print(f"formatted values_list: {self.values_list}")
         for subnet in self.subnets_list:
             if subnet.find('\n') != -1:
                 idx = subnet.find('\n')
                 self.subnets_list[self.subnets_list.index(subnet)] = subnet[:idx]
-        print(f"formatted subnets_list: {self.subnets_list}")
 
     def buildDictionary(self):  # NOQA
         idx = 0

@@ -8,24 +8,23 @@ class WorkbookEditor:
         self.COLUMN_DATE_CHAR = 'A'
         self.COLUMN_WRITE_VALUE_SUBNETS = {'Targon': 'J', 'Nineteen': 'R', 'Gradients': 'Z', 'Chutes': 'AD'}
         self.DARK_GREEN = PatternFill(start_color='3cb371', end_color='3cb371', fill_type='solid')
+        self.ERROR_CODES = {'1': "[WorkbookEditor error] during loading of the workbook!"}
         # Variables
         self.path_to_file = 'Files/Staking Rewards TAO.xlsx'
-        self.errorCodes_dict = {'1': "[WorkbookEditor error] during loading of the workbook!"}
         try:
             self.workbook = xl.load_workbook(self.path_to_file)
         except:  # NOQA
-            print(self.errorCodes_dict['1'])
+            print(self.ERROR_CODES['1'])
         self.workbook_sheet_titles = self.getWorksheetTitles()
-        # print(f"[WorkbookEditor debug] workbook sheet titles: {self.workbook_sheet_titles}")
         self.timestamp_day_month = ''
 
-    def getWorksheetTitles(self):
+    def getWorksheetTitles(self):  # NOQA
         workbook_sheets = {}
         for idx in range(len(self.workbook.worksheets)):
             workbook_sheets[idx] = self.workbook.worksheets[idx].title
         return workbook_sheets
 
-    def sortInSubnetData(self, in_subnet_data):
+    def sortInSubnetData(self, in_subnet_data):  # NOQA
         for idx in self.workbook_sheet_titles:
             if in_subnet_data['0'] in self.workbook_sheet_titles[idx]:
                 target_sheet = self.workbook.get_sheet_by_name(in_subnet_data['0'])  # NOQA
