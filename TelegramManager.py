@@ -43,10 +43,10 @@ class TelegramManager:
             self.first_run = False
         else:
             formatted_message = f"> daily subnet rewards < \n" \
-                                f"▪ {keys[0]} : {in_message[keys[0]]} [+{round(float(in_message[keys[0]] - self.last_message[keys[0]]), 2)}]\n" \
-                                f"▪ {keys[1]} : {in_message[keys[1]]} [+{round(float(in_message[keys[1]] - self.last_message[keys[1]]), 2)}]\n" \
-                                f"▪ {keys[2]} : {in_message[keys[2]]} [+{round(float(in_message[keys[2]] - self.last_message[keys[2]]), 2)}]\n" \
-                                f"▪ {keys[3]} : {in_message[keys[3]]} [+{round(float(in_message[keys[3]] - self.last_message[keys[3]]), 2)}]\n"
+                                f"▪ {keys[0]} : {in_message[keys[0]]} [+{in_message[keys[0]] - self.last_message[keys[0]]}]\n" \
+                                f"▪ {keys[1]} : {in_message[keys[1]]} [+{in_message[keys[1]] - self.last_message[keys[1]]}]\n" \
+                                f"▪ {keys[2]} : {in_message[keys[2]]} [+{in_message[keys[2]] - self.last_message[keys[2]]}]\n" \
+                                f"▪ {keys[3]} : {in_message[keys[3]]} [+{in_message[keys[3]] - self.last_message[keys[3]]}]\n"
         self.last_message = in_message
         return formatted_message
 """

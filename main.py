@@ -24,7 +24,7 @@ def dailyUpdate():  # NOQA
         else:
             print("[TelegramManager error] while trying to send daily rewards update message!")
     else:
-        TelegramManager.sendMessage(ERROR_CODES['1'])
+        TelegramManager.sendMessage(ERROR_CODES['1'], 'error')
         print(ERROR_CODES['1'])
 
 
