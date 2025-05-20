@@ -9,6 +9,7 @@ class WorkbookEditor:
         self.COLUMN_WRITE_VALUE_SUBNETS = {'Targon': 'J', 'Nineteen': 'R', 'Gradients': 'Z', 'Chutes': 'AD'}
         self.DARK_GREEN = PatternFill(start_color='3cb371', end_color='3cb371', fill_type='solid')
         self.ERROR_CODES = {'1': "[WorkbookEditor error] during loading of the workbook!"}
+        self.STATUS_CODES = {'1': f"[WorkbookEditor status] daily rewards successfully written into workbook!"}
         # Variables
         self.path_to_file = 'Files/Staking Rewards TAO.xlsx'
         try:
@@ -46,9 +47,7 @@ class WorkbookEditor:
                                 target_sheet[write_coordinate] = subnet_balance
                                 target_sheet[self.COLUMN_DATE_CHAR + str(row_id + 1)].fill = self.DARK_GREEN
                             self.workbook.save(self.path_to_file)
-                            print(f"[WorkbookEditor status] daily rewards"
-                                  f" for {timestamp_day_month} successfully "
-                                  f"written into workbook!")
+                            print(self.STATUS_CODES['1'])
                             return
                     except:  # NOQA
                         pass
