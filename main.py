@@ -5,8 +5,8 @@ from TelegramManager import TelegramManager
 
 # Defines
 USER = 'Patrick'
-TEST_MODE = True
-# TEST_MODE = False
+# TEST_MODE = True
+TEST_MODE = False
 DAY_IN_SECONDS = 86400
 TEST_CYCLE_TIME = 10
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!",
