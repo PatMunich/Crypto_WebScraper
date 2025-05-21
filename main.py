@@ -5,11 +5,14 @@ from TelegramManager import TelegramManager
 
 # Defines
 USER = 'Patrick'
-TEST_MODE = False
-DAY_IN_SECONDS = 10 #86400
+TEST_MODE = True
+# TEST_MODE = False
+DAY_IN_SECONDS = 86400
+TEST_CYCLE_TIME = 10
 ERROR_CODES = {'1': "[WebScraper error] trying to execute web-scraper!",
                '2': "[TelegramManager error] while trying to send daily rewards update message!"}
-STATUS_CODES = {'1': f"[WebScraper status] result: "}
+STATUS_CODES = {'1': "[WebScraper status] result: ",
+                '2': "[TelegramManager status] sending status message supressed due to test mode!]"}
 TARGET_WEBSITE = 'https://backprop.finance/dtao/profile/5Cd5nSe1PzuGteZ3vSCZs8pcHxqy3wwmYcpHznK5Fbctu27W'
 
 def dailyUpdate():  # NOQA
@@ -21,8 +24,11 @@ def dailyUpdate():  # NOQA
         print(STATUS_CODES['1'], dict(list(WebScraper.result_dict.items())))
         data_set = WebScraper.provideResultData()
         WorkbookEditor.sortInSubnetData(data_set)
-        if TelegramManager.sendMessage(data_set):
+        send_status = TelegramManager.sendMessage(data_set)
+        if send_status:
             pass
+        elif send_status == '0':
+            print(STATUS_CODES['2'])
         else:
             print(ERROR_CODES['2'])
     else:
@@ -33,8 +39,11 @@ def dailyUpdate():  # NOQA
 if __name__ == '__main__':
     WebScraper = WebScraper(TARGET_WEBSITE, TEST_MODE)
     WorkbookEditor = WorkbookEditor()
-    TelegramManager = TelegramManager(USER)
+    TelegramManager = TelegramManager(USER, TEST_MODE)
     while True:
         dailyUpdate()
         print('\n')
-        time.sleep(DAY_IN_SECONDS)
+        if not TEST_MODE:
+            time.sleep(DAY_IN_SECONDS)
+        else:
+            time.sleep(TEST_CYCLE_TIME)

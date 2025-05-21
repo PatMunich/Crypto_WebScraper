@@ -7,7 +7,7 @@ SEND_MESSAGE_ENDPOINT = "/sendMessage"
 
 
 class TelegramManager:
-    def __init__(self, in_user):
+    def __init__(self, in_user, in_test_mode):
         self.token = "init"
         self.chatId = 0
         self.selectChatId(in_user)
@@ -15,6 +15,7 @@ class TelegramManager:
         self.offset = 0
         self.first_run = True
         self.last_message = {}
+        self.TEST_MODE = in_test_mode
 
     def selectChatId(self, in_user):  # NOQA
         if in_user == "Patrick":
@@ -24,13 +25,16 @@ class TelegramManager:
             pass
 
     def sendMessage(self, in_message, type='normal'):  # NOQA
-        if type == 'normal':
-            formatted_message = self.formatMessage(in_message)
-            params = {"chat_id": f"{self.chatId}", "text": f"{formatted_message}"}
+        if not self.TEST_MODE:
+            if type == 'normal':
+                formatted_message = self.formatMessage(in_message)
+                params = {"chat_id": f"{self.chatId}", "text": f"{formatted_message}"}
+            else:
+                params = {"chat_id": f"{self.chatId}", "text": f"{in_message}"}
+            message = requests.post(f"{self.url}{SEND_MESSAGE_ENDPOINT}", params=params)  # NOQA
+            return message.status_code
         else:
-            params = {"chat_id": f"{self.chatId}", "text": f"{in_message}"}
-        message = requests.post(f"{self.url}{SEND_MESSAGE_ENDPOINT}", params=params)  # NOQA
-        return message.status_code
+            return 0
 
     def formatMessage(self, in_message):  # NOQA
         keys = list(in_message.keys())
