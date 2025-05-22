@@ -7,8 +7,9 @@ class WebScraper:
     def __init__(self, in_website, in_test_mode):
         # Defines
         self.SUCCESS_CODE = 200
-        self.TEST_MODE = in_test_mode
         self.TOTAL_SUBNETS = 4
+        self.TEST_MODE = in_test_mode
+        self.LOG_WEBSITE = False
         self.SEARCH_STRING_VALUES = '<span class="max-w-full truncate text-text-secondary">'
         self.SEARCH_STRING_NAMES = '<dt class="max-w-36 truncate font-medium lg:max-w-28 xl:max-w-36">'
         self.ERROR_CODES = {'1': "[WebScraper error] value in dict not correctly formatted!",
@@ -53,8 +54,9 @@ class WebScraper:
     def trimWebsiteContent(self):  # NOQA
         if not self.TEST_MODE:
             soup = BeautifulSoup(self.response.content, 'html.parser')  # NOQA
-            with open(self.path_to_file, "w") as f:
-                f.write(str(soup))
+            if self.LOG_WEBSITE:
+                with open(self.path_to_file, "w") as f:
+                    f.write(str(soup))
         else:
             soup = BeautifulSoup(self.Tester.readFile(), 'html.parser')
         website = str(soup.prettify())
